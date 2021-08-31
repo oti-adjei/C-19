@@ -32,10 +32,11 @@ class _LoginState extends State<Login> {
 
     return Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.green, Colors.yellow])),
+          image: DecorationImage(
+            image: AssetImage('assets/second.jpg'),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Scaffold(
           // By defaut, Scaffold background is white
           // Set its value to transparent
@@ -45,10 +46,8 @@ class _LoginState extends State<Login> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
-                height: 200,
-                child: Stack(
-                  children: <Widget>[],
-                ),
+                height: 150,
+
               ),
               SizedBox(
                 height: 20,
@@ -62,7 +61,7 @@ class _LoginState extends State<Login> {
                     FadeAnimation(
                       1,
                       Text(
-                        'Hello There, \nwelcome back',
+                        'Hello there, \nWelcome back',
                         style: TextStyle(
                             fontSize: 30,
                             color: Colors.white,
@@ -156,29 +155,29 @@ class _LoginState extends State<Login> {
                             FadeAnimation(
                                 1,
                                 RaisedButton(
-                                    color: Theme.of(context).accentColor,
+                                    color: const Color(0xffFF4C29),
                                     child: Text('Signin'),
                                     onPressed: () => _signin(_email, _password))
 
-                                // InkWell(
-                                //     child: Container(
-                                //       height: 50,
-                                //       margin:
-                                //           EdgeInsets.symmetric(horizontal: 60),
-                                //       decoration: BoxDecoration(
-                                //         borderRadius: BorderRadius.circular(50),
-                                //         color: Colors.blueAccent,
-                                //       ),
-                                //       child: Center(
-                                //         child: Text(
-                                //           'Login',
-                                //           style: TextStyle(color: Colors.white),
-                                //         ),
-                                //       ),
-                                //     ),
+                              // InkWell(
+                              //     child: Container(
+                              //       height: 50,
+                              //       margin:
+                              //           EdgeInsets.symmetric(horizontal: 60),
+                              //       decoration: BoxDecoration(
+                              //         borderRadius: BorderRadius.circular(50),
+                              //         color: Colors.blueAccent,
+                              //       ),
+                              //       child: Center(
+                              //         child: Text(
+                              //           'Login',
+                              //           style: TextStyle(color: Colors.white),
+                              //         ),
+                              //       ),
+                              //     ),
 
-                                //     onTap: _profile()),
-                                ),
+                              //     onTap: _profile()),
+                            ),
 
                             //Create account
                             SizedBox(
@@ -223,19 +222,19 @@ class _LoginState extends State<Login> {
   }
 }
 
-class Home extends StatelessWidget {
-  final auth = FirebaseAuth.instance;
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-            child: Center(
-                child: ElevatedButton(
-                    child: Text('Signin'),
-                    onPressed: () {
-                      auth.signOut();
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => Splash()));
-                    }))));
-  }
-}
+// class Home extends StatelessWidget {
+//   final auth = FirebaseAuth.instance;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//         body: Container(
+//             child: Center(
+//                 child: ElevatedButton(
+//                     child: Text('Signin'),
+//                     onPressed: () {
+//                       auth.signOut();
+//                       Navigator.of(context).pushReplacement(
+//                           MaterialPageRoute(builder: (context) => Splash()));
+//                     }))));
+//   }
+// }

@@ -33,24 +33,23 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   List<PageViewModel> getPages() {
     return [
       PageViewModel(
-        title: "Fractional shares",
+        title: "Wear Mask",
         body:
-        "Instead of having to buy an entire share, invest any amount you want.",
-        image: _buildImage('img1.jpg'),
+        "Wearing a face mask correctly can help prevent the spread of Covid-19 to others.",
+        image: _buildImage('img1.png'),
         decoration: pageDecoration,
       ),
       PageViewModel(
-        title: "Learn as you go",
+        title: "Use Sanitizers",
         body:
-        "Download the Stockpile app and master the market with our mini-lesson.",
-        image: _buildImage('img2.jpg'),
+        "Use hand sanitizers after entering public places and generally any activity..",
+        image: _buildImage('img2.png'),
         decoration: pageDecoration,
       ),
       PageViewModel(
-        title: "Kids and teens",
-        body:
-        "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-        image: _buildImage('img3.jpg'),
+        title: "Wash Hands",
+        body: " Washing your hands can protect you and your loved ones.",
+        image: _buildImage('img3.png'),
         decoration: pageDecoration,
       ),
       PageViewModel(
@@ -91,22 +90,23 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       skipFlex: 0,
       nextFlex: 0,
       //rtl: true, // Display as right-to-left
-      skip: const Text('Skip'),
-      next: const Icon(Icons.arrow_forward),
-      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+      skip: const Text(
+        'Skip',
+        style: TextStyle(color: const Color(0xffFF4C29)),
+      ),
+      next: const Icon(Icons.arrow_forward, color: const Color(0xffFF4C29)),
+      done: const Text(
+        'Done',
+        style: TextStyle(
+            fontWeight: FontWeight.w600, color: const Color(0xffFF4C29)),
+      ),
       curve: Curves.fastLinearToSlowEaseIn,
+      dotsDecorator: DotsDecorator(
+        activeColor: Color(0xffFF4C29),
+      ),
     );
   }
 }
 
 
-// the HOme page
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Home')),
-      body: const Center(child: Text("This is the screen after Introduction")),
-    );
-  }
-}
+

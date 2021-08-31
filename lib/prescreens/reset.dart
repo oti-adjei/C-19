@@ -15,10 +15,11 @@ class _ResetState extends State<Reset> {
 
     return Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.green, Colors.yellow])),
+          image: DecorationImage(
+            image: AssetImage('assets/second.jpg'),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Scaffold(
           // By defaut, Scaffold background is white
           // Set its value to transparent
@@ -29,9 +30,6 @@ class _ResetState extends State<Reset> {
             children: <Widget>[
               Container(
                 height: 200,
-                child: Stack(
-                  children: <Widget>[],
-                ),
               ),
               SizedBox(
                 height: 20,
@@ -92,7 +90,7 @@ class _ResetState extends State<Reset> {
                             FadeAnimation(
                                 1,
                                 RaisedButton(
-                                    color: Theme.of(context).accentColor,
+                                    color: const Color(0xffFF4C29),
                                     child: Text('Signin'),
                                     onPressed: () {
                                       auth.sendPasswordResetEmail(

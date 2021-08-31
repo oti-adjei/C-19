@@ -1,9 +1,10 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:c19app/guide/myths_page.dart';
+import 'package:c19app/guide/precautions_page.dart';
+import 'package:c19app/guide/symptoms_page.dart';
+import 'package:c19app/guide/virus_details_page.dart';
 
-import '../../screens/myths_page.dart';
-import '../../screens/precautions_page.dart';
-import '../../screens/symptoms_page.dart';
-import '../../screens/virus_details_page.dart';
+
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable

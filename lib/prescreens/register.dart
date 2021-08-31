@@ -29,10 +29,11 @@ class _RegisterState extends State<Register> {
 
     return Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.green, Colors.yellow])),
+          image: DecorationImage(
+            image: AssetImage('assets/second.jpg'),
+            fit: BoxFit.fill,
+          ),
+        ),
         child: Scaffold(
           // By defaut, Scaffold background is white
           // Set its value to transparent
@@ -43,9 +44,6 @@ class _RegisterState extends State<Register> {
             children: <Widget>[
               Container(
                 height: 100,
-                child: Stack(
-                  children: <Widget>[],
-                ),
               ),
               SizedBox(
                 height: 20,
@@ -58,7 +56,7 @@ class _RegisterState extends State<Register> {
                     FadeAnimation(
                       1,
                       Text(
-                        'Hello There, \nwelcome back',
+                        'Hi there,\nJoin our family',
                         style: TextStyle(
                             fontSize: 30,
                             color: Colors.white,
@@ -168,30 +166,30 @@ class _RegisterState extends State<Register> {
                             FadeAnimation(
                                 1,
                                 RaisedButton(
-                                  color: Theme.of(context).accentColor,
+                                  color: const Color(0xffFF4C29),
                                   child: Text('Signin'),
                                   onPressed: () => _signup(_email, _password),
                                 )
 
-                                // InkWell(
-                                //     child: Container(
-                                //       height: 50,
-                                //       margin:
-                                //           EdgeInsets.symmetric(horizontal: 60),
-                                //       decoration: BoxDecoration(
-                                //         borderRadius: BorderRadius.circular(50),
-                                //         color: Colors.blueAccent,
-                                //       ),
-                                //       child: Center(
-                                //         child: Text(
-                                //           'Login',
-                                //           style: TextStyle(color: Colors.white),
-                                //         ),
-                                //       ),
-                                //     ),
+                              // InkWell(
+                              //     child: Container(
+                              //       height: 50,
+                              //       margin:
+                              //           EdgeInsets.symmetric(horizontal: 60),
+                              //       decoration: BoxDecoration(
+                              //         borderRadius: BorderRadius.circular(50),
+                              //         color: Colors.blueAccent,
+                              //       ),
+                              //       child: Center(
+                              //         child: Text(
+                              //           'Login',
+                              //           style: TextStyle(color: Colors.white),
+                              //         ),
+                              //       ),
+                              //     ),
 
-                                //     onTap: _profile()),
-                                ),
+                              //     onTap: _profile()),
+                            ),
 
                             //Login text
                             SizedBox(

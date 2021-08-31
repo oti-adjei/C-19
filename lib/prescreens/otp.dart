@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:c19app/prescreens/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -127,7 +128,7 @@ class _OtpState extends State<Otp> {
     if (user.emailVerified) {
       timer.cancel();
       Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+          .pushReplacement(MaterialPageRoute(builder: (context) => Splash()));
     }
   }
 }

@@ -1,16 +1,23 @@
+// ignore_for_file: prefer_const_constructors, prefer_final_fields, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:c19app/prescreens/welcome.dart';
 import 'package:flutter/material.dart';
+import 'package:c19app/screens/news.dart';
+import 'package:c19app/settings/notifications.dart';
+import 'package:c19app/settings/profile.dart';
+import 'package:c19app/settings/settings.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../widgets/home_page_widgets/home_categories.dart';
 import 'package:c19app/widgets/profile_menu.dart';
 import 'package:c19app/widgets/profile_pic.dart';
 import 'package:c19app/widgets/home_page_widgets/home_categories.dart';
 import '../widgets/countryDropdown.dart';
-import 'package:c19app/constants.dart';
+import 'package:c19app/screens/statsPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-
-
+String _country = 'USA';
 
 class MyHomePage extends StatefulWidget {
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -28,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Navi(
         icon: Icon(Icons.insert_chart),
         title: Text("Stats"),
-        widget: Page2(),
+        widget: statisticsPage(),
         naviKey: GlobalKey<NavigatorState>()),
     Navi(
         icon: Icon(Icons.list),
@@ -40,7 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Account"),
         widget: Page4(),
         naviKey: GlobalKey<NavigatorState>())
-
   ];
 
   Widget _navigationTab({GlobalKey<NavigatorState> naviKey, Widget widget}) {
@@ -64,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _bottomNavigationBar() {
     return BottomNavigationBar(
-      selectedItemColor: Colors.blueAccent,
+      selectedItemColor: Color(0xffFF4C29),
       type: BottomNavigationBarType.fixed,
       currentIndex: _currentPage,
       onTap: (int index) {
@@ -112,15 +118,12 @@ class Navi {
   Navi({this.widget, this.icon, this.title, this.naviKey});
 }
 
-
 //PAGE 1
 class Page1 extends StatefulWidget {
   const Page1({Key key}) : super(key: key);
 
-
   @override
   _Page1State createState() => _Page1State();
-
 }
 
 class _Page1State extends State<Page1> {
@@ -129,17 +132,18 @@ class _Page1State extends State<Page1> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff473f97),
+        title: Text("Home"),
+        backgroundColor: Color(0xff1E3163),
         elevation: 0.0,
         automaticallyImplyLeading: false,
-        centerTitle: false,
-        title:Text(
-          "COVID-19",
-          style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 25.0),
-        ),
+        //centerTitle: false,
+        // title:Text(
+        //   "PRO-VID",
+        //   style: const TextStyle(
+        //       color: Colors.white,
+        //       fontWeight: FontWeight.bold,
+        //       fontSize: 25.0),
+        // ),
       ),
       // appBar: AppBar(title: Text("Page 1"), actions: <Widget>[
       //   IconButton(
@@ -150,30 +154,28 @@ class _Page1State extends State<Page1> {
       //                 builder: (BuildContext context) => new Page1()));
       //       })
       // ]),
-      body:CustomScrollView(
+      body: CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: [
           _buildHeader(screenHeight),
           _buildPreventionTips(screenHeight),
           _buildYourOwnTest(screenHeight),
-          _buildYourOwnTest(screenHeight),
-
+          _buildYourOwnTests(screenHeight),
         ],
       ),
     );
   }
-  String _country = 'USA';
 
   SliverToBoxAdapter _buildHeader(double screenHeight) {
     return SliverToBoxAdapter(
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-            color: Color(0xff473f97),
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(40.0),
-              bottomRight: Radius.circular(40.0),
-            )
+          color: Color(0xff1E3163),
+          // borderRadius: BorderRadius.only(
+          //   bottomLeft: Radius.circular(40.0),
+          //   bottomRight: Radius.circular(40.0),
+          // )
         ),
         child: Column(
           children: [
@@ -198,7 +200,6 @@ class _Page1State extends State<Page1> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 SizedBox(height: screenHeight * 0.01),
                 Text(
                   'If you '
@@ -217,9 +218,9 @@ class _Page1State extends State<Page1> {
                         'Call Now',
                         style: TextStyle(color: Colors.white),
                       ),
-                      onPressed: () {},
+                      onPressed: () => launch("tel:0509497700"),
                       icon: const Icon(Icons.phone, color: Colors.white),
-                      color: Colors.redAccent,
+                      color: Color(0xffFF4C29),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
                     ),
@@ -229,10 +230,10 @@ class _Page1State extends State<Page1> {
                         'SMS',
                         style: TextStyle(color: Colors.white),
                       ),
-                      color: Colors.green,
+                      color: Color(0xffFF4C29),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
-                      onPressed: () {},
+                      onPressed: () => launch("sms:0509497700"),
                       icon: Icon(
                         Icons.email,
                         color: Colors.white,
@@ -297,55 +298,95 @@ class _Page1State extends State<Page1> {
 
   SliverToBoxAdapter _buildYourOwnTest(double screenHeight) {
     return SliverToBoxAdapter(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-        height: screenHeight * 0.15,
-        decoration: BoxDecoration(
-          gradient:
-          LinearGradient(colors: [Color(0xffad9fe4), Color(0xff473f97)]),
-          borderRadius: BorderRadius.circular(20.0),
+      child: GestureDetector(
+        onTap: () => launch('https://ghs.gov.gh/covid19/'),
+        child:Container(
+          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          height: screenHeight * 0.15,
+          decoration: BoxDecoration(
+            gradient:
+            LinearGradient(colors: [Color(0xffEEEEEE), Color(0xff1E3163)]),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Image.asset('assets/images/own_test.png'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Ghana Website',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    'Ghana outbreak response\nmanagement updates',
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Image.asset('assets/images/own_test.png'),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Do your own test',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  'Follow the instructions\nto do your own test',
-                  style: TextStyle(
-                      color: Colors.white70,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
+      ),);
   }
-// Center(
-//   // alignment: Alignment.center,
-//     child: FlatButton(
-//         color: Colors.blue,
-//         textColor: Colors.white,
-//         onPressed: () {
-//           Navigator.of(context, rootNavigator: false).push(
-//               MaterialPageRoute(
-//                   builder: (BuildContext context) => ListViewPage()));
-//         },
-//         child: Text("Switch Page - Leave a Like"))));
+
+  SliverToBoxAdapter _buildYourOwnTests(double screenHeight) {
+    return SliverToBoxAdapter(
+      child: GestureDetector(
+        onTap: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      NewsPage()));
+        },
+        child:Container(
+          margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+          height: screenHeight * 0.15,
+          decoration: BoxDecoration(
+            gradient:
+            LinearGradient(colors: [Color(0xffEEEEEE), Color(0xff1E3163)]),
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Image.asset('assets/images/own_test.png'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Find latest news on \nCovid-19',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 6),
+                  Text(
+                    'Any news about what is \nhappening around the world',
+                    style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),);
+  }
 } //
 
 //PAGE 2
@@ -361,8 +402,8 @@ class Page2 extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                     context,
-                    new MaterialPageRoute(
-                        builder: (BuildContext context) => new Page2()));
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => Page2()));
               })
         ]),
         body: Center(
@@ -372,9 +413,8 @@ class Page2 extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      new MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                          new ListViewPage()));
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => ListViewPage()));
                 },
                 child: Text("Switch Page - Leave a Like"))));
   }
@@ -393,22 +433,23 @@ class _Page3State extends State<Page3> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text("Page 2"), actions: <Widget>[
-        IconButton(
-            icon: Icon(Icons.ac_unit),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (BuildContext context) => new Page2()));
-            })
-      ]),
+      appBar: AppBar(
+          backgroundColor: Color(0xFF1E3163),
+          title: Text("Guide"),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.ac_unit),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => Page2()));
+                })
+          ]),
       body: HomeCategories(),
     );
   }
 }
-
-
 
 //PAGE 4
 class Page4 extends StatefulWidget {
@@ -419,72 +460,85 @@ class Page4 extends StatefulWidget {
 }
 
 class _Page4State extends State<Page4> {
+  final auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Profile"),
+          backgroundColor: Color(0xff1E3163),
+          title: Text("Account"),
+          elevation: 0.0,
           automaticallyImplyLeading: false,
         ),
-        body: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: Column(
-            children: [
-              ProfilePic(),
-              SizedBox(height: 20),
-              ProfileMenu(
-                text: "My Account",
-                icon: "assets/icons/User Icon.svg",
-                press: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                          new ListViewPage()));
-                },
+        body: Container(
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                children: [
+                  ProfilePic(),
+                  SizedBox(height: 20),
+                  ProfileMenu(
+                    text: "My Profile",
+                    icon: "assets/icons/User Icon.svg",
+                    press: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  profilePage()));
+                    },
+                  ),
+                  ProfileMenu(
+                    text: "Notifications",
+                    icon: "assets/icons/Bell.svg",
+                    press: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  notificationsPage()));
+                    },
+                  ),
+                  ProfileMenu(
+                    text: "Settings",
+                    icon: "assets/icons/Settings.svg",
+                    press: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  SettingsPage()));
+                    },
+                  ),
+                  ProfileMenu(
+                    text: "Help Center",
+                    icon: "assets/icons/Question mark.svg",
+                    press: () {},
+                  ),
+                  ProfileMenu(
+                    text: "Log Out",
+                    icon: "assets/icons/Log out.svg",
+                    press: () {
+                      auth.signOut();
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => Splash()));
+                    },
+                  ),
+                ],
               ),
-              ProfileMenu(
-                text: "Notifications",
-                icon: "assets/icons/Bell.svg",
-                press: () {},
-              ),
-              ProfileMenu(
-                text: "Settings",
-                icon: "assets/icons/Settings.svg",
-                press: () {},
-              ),
-              ProfileMenu(
-                text: "Help Center",
-                icon: "assets/icons/Question mark.svg",
-                press: () {},
-              ),
-              ProfileMenu(
-                text: "Log Out",
-                icon: "assets/icons/Log out.svg",
-                press: () {},
-              ),
-            ],
-          ),
-        )
-    );
+            )));
   }
 }
-
-
-
-
-
-
-
 
 class ListViewPage extends StatelessWidget {
   const ListViewPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("Infinite List"),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Infinite List"),
       ),
       body: ListView.builder(
         itemBuilder: (context, index) {
