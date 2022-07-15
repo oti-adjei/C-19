@@ -6,17 +6,12 @@ import 'package:c19app/widgets/home_page_widgets/home_categories.dart';
 import '../widgets/countryDropdown.dart';
 import 'package:c19app/constants.dart';
 
-
-
-
 class MyHomePage extends StatefulWidget {
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int _currentPage = 0;
 
   List<Navi> _items = [
@@ -40,7 +35,6 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Account"),
         widget: Page4(),
         naviKey: GlobalKey<NavigatorState>())
-
   ];
 
   Widget _navigationTab({GlobalKey<NavigatorState> naviKey, Widget widget}) {
@@ -71,7 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
         _selectTab(index);
       },
       items: _items
-          .map((e) => BottomNavigationBarItem(icon: e.icon, title: e.title))
+          .map((e) =>
+              BottomNavigationBarItem(icon: e.icon, label: e.title.toString()))
           .toList(),
     );
   }
@@ -81,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return WillPopScope(
       onWillPop: () async {
         final isFirstRouteInCurrentTab =
-        !await _items[_currentPage].naviKey.currentState.maybePop();
+            !await _items[_currentPage].naviKey.currentState.maybePop();
         if (isFirstRouteInCurrentTab) {
           if (_currentPage != 0) {
             _selectTab(1);
@@ -112,15 +107,12 @@ class Navi {
   Navi({this.widget, this.icon, this.title, this.naviKey});
 }
 
-
 //PAGE 1
 class Page1 extends StatefulWidget {
   const Page1({Key key}) : super(key: key);
 
-
   @override
   _Page1State createState() => _Page1State();
-
 }
 
 class _Page1State extends State<Page1> {
@@ -133,12 +125,10 @@ class _Page1State extends State<Page1> {
         elevation: 0.0,
         automaticallyImplyLeading: false,
         centerTitle: false,
-        title:Text(
+        title: Text(
           "COVID-19",
           style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-              fontSize: 25.0),
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 25.0),
         ),
       ),
       // appBar: AppBar(title: Text("Page 1"), actions: <Widget>[
@@ -150,18 +140,18 @@ class _Page1State extends State<Page1> {
       //                 builder: (BuildContext context) => new Page1()));
       //       })
       // ]),
-      body:CustomScrollView(
+      body: CustomScrollView(
         physics: ClampingScrollPhysics(),
         slivers: [
           _buildHeader(screenHeight),
           _buildPreventionTips(screenHeight),
           _buildYourOwnTest(screenHeight),
           _buildYourOwnTest(screenHeight),
-
         ],
       ),
     );
   }
+
   String _country = 'USA';
 
   SliverToBoxAdapter _buildHeader(double screenHeight) {
@@ -173,8 +163,7 @@ class _Page1State extends State<Page1> {
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(40.0),
               bottomRight: Radius.circular(40.0),
-            )
-        ),
+            )),
         child: Column(
           children: [
             Row(
@@ -198,12 +187,11 @@ class _Page1State extends State<Page1> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 SizedBox(height: screenHeight * 0.01),
                 Text(
                   'If you '
-                      'feel sick with any COVID-19 symptoms, please call or text '
-                      'us for help',
+                  'feel sick with any COVID-19 symptoms, please call or text '
+                  'us for help',
                   style: TextStyle(
                       fontSize: 16,
                       color: Colors.white70,
@@ -302,7 +290,7 @@ class _Page1State extends State<Page1> {
         height: screenHeight * 0.15,
         decoration: BoxDecoration(
           gradient:
-          LinearGradient(colors: [Color(0xffad9fe4), Color(0xff473f97)]),
+              LinearGradient(colors: [Color(0xffad9fe4), Color(0xff473f97)]),
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: Row(
@@ -374,7 +362,7 @@ class Page2 extends StatelessWidget {
                       context,
                       new MaterialPageRoute(
                           builder: (BuildContext context) =>
-                          new ListViewPage()));
+                              new ListViewPage()));
                 },
                 child: Text("Switch Page - Leave a Like"))));
   }
@@ -408,8 +396,6 @@ class _Page3State extends State<Page3> {
   }
 }
 
-
-
 //PAGE 4
 class Page4 extends StatefulWidget {
   const Page4({Key key}) : super(key: key);
@@ -440,7 +426,7 @@ class _Page4State extends State<Page4> {
                       context,
                       new MaterialPageRoute(
                           builder: (BuildContext context) =>
-                          new ListViewPage()));
+                              new ListViewPage()));
                 },
               ),
               ProfileMenu(
@@ -465,17 +451,9 @@ class _Page4State extends State<Page4> {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 }
-
-
-
-
-
-
-
 
 class ListViewPage extends StatelessWidget {
   const ListViewPage({Key key}) : super(key: key);
